@@ -133,13 +133,7 @@ services:
         do sleep 1; done
         echo sawtooth.consensus.pbft.members=\\['\"'$$(cat /pbft-shared/validators/validator-0.pub)'\"','\"'$$(cat /pbft-shared/validators/validator-1.pub)'\"','\"'$$(cat /pbft-shared/validators/validator-2.pub)'\"','\"'$$(cat /pbft-shared/validators/validator-3.pub)'\"','\"'$$(cat /pbft-shared/validators/validator-4.pub)'\"'\\] &&
         if [ ! -e config.batch ]; then
-         sawset proposal create \
-            -k /etc/sawtooth/keys/validator.priv \
-            sawtooth.consensus.algorithm.name=pbft \
-            sawtooth.consensus.algorithm.version=1.0 \
-            sawtooth.consensus.pbft.members=\\['\"'$$(cat /pbft-shared/validators/validator-0.pub)'\"','\"'$$(cat /pbft-shared/validators/validator-1.pub)'\"','\"'$$(cat /pbft-shared/validators/validator-2.pub)'\"','\"'$$(cat /pbft-shared/validators/validator-3.pub)'\"','\"'$$(cat /pbft-shared/validators/validator-4.pub)'\"'\\] \
-            sawtooth.publisher.max_batches_per_block=1200 \
-            -o config.batch
+         sawset proposal create -k /etc/sawtooth/keys/validator.priv sawtooth.consensus.algorithm.name=pbft sawtooth.consensus.algorithm.version=1.0 sawtooth.consensus.pbft.members=\\['\"'$$(cat /pbft-shared/validators/validator-0.pub)'\"','\"'$$(cat /pbft-shared/validators/validator-1.pub)'\"','\"'$$(cat /pbft-shared/validators/validator-2.pub)'\"','\"'$$(cat /pbft-shared/validators/validator-3.pub)'\"','\"'$$(cat /pbft-shared/validators/validator-4.pub)'\"'\\] sawtooth.publisher.max_batches_per_block=1200 -o config.batch
         fi &&
         if [ ! -e /var/lib/sawtooth/genesis.batch ]; then
           sawadm genesis config-genesis.batch config.batch
@@ -147,14 +141,7 @@ services:
         if [ ! -e /root/.sawtooth/keys/my_key.priv ]; then
           sawtooth keygen my_key
         fi &&
-        sawtooth-validator -vv \
-          --endpoint tcp://validator-0:8800 \
-          --bind component:tcp://eth0:4004 \
-          --bind consensus:tcp://eth0:5050 \
-          --bind network:tcp://eth0:8800 \
-          --scheduler parallel \
-          --peering static \
-          --maximum-peer-connectivity 10000
+        sawtooth-validator -vv --endpoint tcp://validator-0:8800 --bind component:tcp://eth0:4004 --bind consensus:tcp://eth0:5050 \--bind network:tcp://eth0:8800 --scheduler parallel --peering static --maximum-peer-connectivity 10000
       "
 
   validator-1:
@@ -179,15 +166,7 @@ services:
           cp /etc/sawtooth/keys/validator.priv /pbft-shared/validators/validator-1.priv
         fi &&
         sawtooth keygen my_key &&
-        sawtooth-validator -vv \
-          --endpoint tcp://validator-1:8800 \
-          --bind component:tcp://eth0:4004 \
-          --bind consensus:tcp://eth0:5050 \
-          --bind network:tcp://eth0:8800 \
-          --scheduler parallel \
-          --peering static \
-          --maximum-peer-connectivity 10000 \
-          --peers tcp://validator-0:8800
+        sawtooth-validator -vv --endpoint tcp://validator-1:8800 --bind component:tcp://eth0:4004 --bind consensus:tcp://eth0:5050 --bind network:tcp://eth0:8800 --scheduler parallel --peering static --maximum-peer-connectivity 10000 --peers tcp://validator-0:8800
       "
 
   validator-2:
@@ -212,16 +191,7 @@ services:
           cp /etc/sawtooth/keys/validator.priv /pbft-shared/validators/validator-2.priv
         fi &&
         sawtooth keygen my_key &&
-        sawtooth-validator -vv \
-          --endpoint tcp://validator-2:8800 \
-          --bind component:tcp://eth0:4004 \
-          --bind consensus:tcp://eth0:5050 \
-          --bind network:tcp://eth0:8800 \
-          --scheduler parallel \
-          --peering static \
-          --maximum-peer-connectivity 10000 \
-          --peers tcp://validator-0:8800 \
-          --peers tcp://validator-1:8800
+        sawtooth-validator -vv --endpoint tcp://validator-2:8800 --bind component:tcp://eth0:4004 --bind consensus:tcp://eth0:5050 --bind network:tcp://eth0:8800 --scheduler parallel --peering static --maximum-peer-connectivity 10000 --peers tcp://validator-0:8800 --peers tcp://validator-1:8800
       "
 
   validator-3:
@@ -246,17 +216,7 @@ services:
          cp /etc/sawtooth/keys/validator.priv /pbft-shared/validators/validator-3.priv
         fi &&
         sawtooth keygen my_key &&
-        sawtooth-validator -vv \
-          --endpoint tcp://validator-3:8800 \
-          --bind component:tcp://eth0:4004 \
-          --bind consensus:tcp://eth0:5050 \
-          --bind network:tcp://eth0:8800 \
-          --scheduler parallel \
-          --peering static \
-          --maximum-peer-connectivity 10000 \
-          --peers tcp://validator-0:8800 \
-          --peers tcp://validator-1:8800 \
-          --peers tcp://validator-2:8800
+        sawtooth-validator -vv --endpoint tcp://validator-3:8800 --bind component:tcp://eth0:4004 --bind consensus:tcp://eth0:5050 --bind network:tcp://eth0:8800 --scheduler parallel --peering static --maximum-peer-connectivity 10000 --peers tcp://validator-0:8800 --peers tcp://validator-1:8800 --peers tcp://validator-2:8800
       "
 
   validator-4:
@@ -281,18 +241,7 @@ services:
           cp /etc/sawtooth/keys/validator.priv /pbft-shared/validators/validator-4.priv
         fi &&
         sawtooth keygen my_key &&
-        sawtooth-validator -vv \
-          --endpoint tcp://validator-4:8800 \
-          --bind component:tcp://eth0:4004 \
-          --bind consensus:tcp://eth0:5050 \
-          --bind network:tcp://eth0:8800 \
-          --scheduler parallel \
-          --peering static \
-          --maximum-peer-connectivity 10000 \
-          --peers tcp://validator-0:8800 \
-          --peers tcp://validator-1:8800 \
-          --peers tcp://validator-2:8800 \
-          --peers tcp://validator-3:8800
+        sawtooth-validator -vv --endpoint tcp://validator-4:8800 --bind component:tcp://eth0:4004 --bind consensus:tcp://eth0:5050 --bind network:tcp://eth0:8800 --scheduler parallel --peering static --maximum-peer-connectivity 10000 --peers tcp://validator-0:8800 --peers tcp://validator-1:8800 --peers tcp://validator-2:8800 --peers tcp://validator-3:8800
       "
 
 # -------------=== pbft engines ===-------------
